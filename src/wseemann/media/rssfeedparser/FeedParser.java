@@ -11,6 +11,7 @@ import java.util.zip.GZIPInputStream;
 
 import org.xml.sax.InputSource;
 
+import com.rometools.rome.feed.synd.SyndEnclosure;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
@@ -57,6 +58,17 @@ public class FeedParser {
 				//System.out.println();
 				
 				mFirstEntryLink = entry.getLink();
+				
+                List<SyndEnclosure> enclosures = entry.getEnclosures();
+                
+                if (enclosures.size() > 0) {
+                	if (enclosures.get(0).getType() != null &&
+                			enclosures.get(0).getType().startsWith("audio/") ||
+                			enclosures.get(0).getType().startsWith("video/"));
+                	
+                    mFirstEntryLink = enclosures.get(0).getUrl();
+                }
+
 				break;
 			}
 		} finally {
